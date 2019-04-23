@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.k2data.kbc.properties.dao.PropertiesMapper">
+    <resultMap id="BaseResultMap" type="com.k2data.kbc.properties.model.Properties">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="c_group_key" jdbcType="VARCHAR" property="groupKey"/>
+        <result column="c_key" jdbcType="VARCHAR" property="key"/>
+        <result column="c_value" jdbcType="VARCHAR" property="value"/>
+        <result column="c_create_date" jdbcType="TIMESTAMP" property="createDate"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+        parameterType="com.k2data.kbc.properties.model.Properties">
+        INSERT INTO kbc_properties (
+         id ,  c_create_date ,
+         c_group_key , c_key , c_value)
+        VALUES (
+        #{id,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP},
+        #{groupKey,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}
+        );
+    </insert>
+
+    <select id="list" resultMap="BaseResultMap" parameterType="map">
+        select id , create_date ,
+        group_key , key_name , key_value
+        from kbc_properties
+        <where>
+            <if test="groupKey != null">
+                and c_group_key like CONCAT('%', #{groupKey}, '%')
+            </if>
+            <if test="keyName != null">
+                and c_key like CONCAT('%', #{key}, '%')
+            </if>
+            <if test="keyValue != null">
+                and c_value like CONCAT('%', #{value}, '%')
+            </if>
+
+            <!--  <if test="beginDate != null">
+                  <![CDATA[ and create_date >= #{beginDate} ]]>
+              </if>
+              <if test="endDate != null">
+                  <![CDATA[ and create_date <= #{endDate} ]]>
+              </if>-->
+        </where>
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from kbc_properties
+          where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+</mapper>
