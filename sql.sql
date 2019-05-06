@@ -1,8 +1,3 @@
-# kbc-Properties
-#只有增和查
-groupkey需要中英文对应关系
-
-# 使用说明
 创建数据表
 SET FOREIGN_KEY_CHECKS=0;
 
